@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 15:25:10 by obaribau          #+#    #+#             */
-/*   Updated: 2020/02/21 16:43:42 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/03/06 16:54:57 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int	main(int argc, char **argv)
 	char	*s;
 
 	s = argv[2];
-	ft_printf(argv[1], s);
+	ft_printf(argv[1], s, 3, 'a');
 	return (0);
 }
