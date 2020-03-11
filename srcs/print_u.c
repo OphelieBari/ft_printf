@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_d.c                                          :+:      :+:    :+:   */
+/*   print_u.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 16:46:38 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/11 17:54:00 by obaribau         ###   ########.fr       */
+/*   Created: 2020/03/11 17:45:40 by obaribau          #+#    #+#             */
+/*   Updated: 2020/03/11 17:53:25 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_printf.h"
 
-int		print_d_justif(int i, struct flags *flags, int len)
+int		print_u_justif(unsigned int i, struct flags *flags, int len)
 {
 		if (i < 0)
 		{
@@ -36,7 +36,7 @@ int		print_d_justif(int i, struct flags *flags, int len)
 		return(0);
 }
 
-int		print_d_nonjustif(int i, struct flags *flags, int len)
+int		print_u_nonjustif(unsigned int i, struct flags *flags, int len)
 {
 		while (flags->taille_champs > len) //pb ici
 		{
@@ -58,16 +58,16 @@ int		print_d_nonjustif(int i, struct flags *flags, int len)
 		return (0);
 }
 
-int		print_d(va_list args, struct flags *flags)
+int	print_u(va_list args, struct flags *flags)
 {
-		int	i;
-		int	len;
+		unsigned int u;
+		int len;
 
-		i = va_arg(args, int);
-		len = ft_strlen(ft_itoa(i)); //il y a pas un malloc ici ??
+		u = va_arg(args, unsigned int);
+		len = ft_strlen(ft_itoa_u(u));
 		if (flags->justif == 1)
-				print_d_justif(i, flags, len);
+				print_u_justif(u, flags, len);
 		else
-				print_d_nonjustif(i, flags, len);
+				print_u_nonjustif(u, flags, len);
 		return (0);
 }

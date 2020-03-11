@@ -6,7 +6,7 @@
 /*   By: opheliebaribaud <marvin@42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 11:44:28 by ophelieba         #+#    #+#             */
-/*   Updated: 2020/03/11 16:59:33 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/03/11 19:19:03 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,12 @@ void	ft_putchar(char c);
 void	*ft_memset(void *b, int c, size_t len);
 int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
-int     putnbr_hexa(unsigned int x, int signal);
+char	*ft_itoa_u(unsigned int n);
 int		print_d(va_list args, struct flags *flags);
 int		print_s(va_list args, struct flags *flags );
+int		print_u(va_list args, struct flags *flags);
+int		print_x(va_list args, struct flags *flags, int signal);
+int		print_c(va_list args, struct flags *flags);
+int		print_p(va_list args, struct flags *flags);
 
 #endif

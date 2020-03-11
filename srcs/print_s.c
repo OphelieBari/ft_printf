@@ -6,11 +6,11 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 16:48:11 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/11 16:48:24 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/03/11 17:14:42 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../ft_printf.h"
 
 int		print_s_justif(char *s, struct flags *flags)
 {

@@ -1,18 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_d.c                                          :+:      :+:    :+:   */
+/*   print_x.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 16:46:38 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/11 17:54:00 by obaribau         ###   ########.fr       */
+/*   Created: 2020/03/11 17:55:47 by obaribau          #+#    #+#             */
+/*   Updated: 2020/03/11 18:26:15 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_printf.h"
 
-int		print_d_justif(int i, struct flags *flags, int len)
+int	len_hexa(unsigned int x)
+{
+	int i;
+
+	i = 0;
+	while (x)
+	{
+		x = x / 16;
+		i++;
+	}
+	return(i);
+}
+
+int	putnbr_hexa(unsigned int x, int signal)
+{
+	int i;
+	unsigned int nbr_final[12];
+       	char *baseX = "0123456789ABCDEF";
+	char *basex = "0123456789abcdef";
+
+	i = 0;
+	        while (x)
+	{
+		nbr_final[i] = x % 16;
+		 x = x / 16;
+		i++;
+	}
+	while (--i >= 0)
+	{
+		if (signal == 1)
+			ft_putchar(baseX[nbr_final[i]]);
+		else
+			ft_putchar(basex[nbr_final[i]]);
+	}
+	return (0);
+}
+
+int		print_x_justif(int i, struct flags *flags, int len, int signal)
 {
 		if (i < 0)
 		{
@@ -26,7 +63,7 @@ int		print_d_justif(int i, struct flags *flags, int len)
 						len++;
 						ft_putchar('0');
 				}
-		ft_putnbr(i);
+		putnbr_hexa(i, signal);
 		len++;
 		while (flags->taille_champs > len)
 		{
@@ -36,9 +73,9 @@ int		print_d_justif(int i, struct flags *flags, int len)
 		return(0);
 }
 
-int		print_d_nonjustif(int i, struct flags *flags, int len)
+int		print_x_nonjustif(int i, struct flags *flags, int len, int signal)
 {
-		while (flags->taille_champs > len) //pb ici
+		while (flags->taille_champs > len)
 		{
 				flags->taille_champs--;
 				if (flags->zero == 1)
@@ -54,20 +91,20 @@ int		print_d_nonjustif(int i, struct flags *flags, int len)
 		}
 		while (len++ < flags->precision)
 				ft_putchar('0');
-		ft_putnbr(i);
+		putnbr_hexa(i, signal);
 		return (0);
 }
 
-int		print_d(va_list args, struct flags *flags)
+int	print_x(va_list args, struct flags *flags, int signal)
 {
-		int	i;
-		int	len;
+		unsigned int x;
+		int len;
 
-		i = va_arg(args, int);
-		len = ft_strlen(ft_itoa(i)); //il y a pas un malloc ici ??
+		x = (unsigned int)(va_arg(args, int));
+		len = len_hexa(x);
 		if (flags->justif == 1)
-				print_d_justif(i, flags, len);
+				print_x_justif(x, flags, len, signal);
 		else
-				print_d_nonjustif(i, flags, len);
+				print_x_nonjustif(x, flags, len, signal);
 		return (0);
 }

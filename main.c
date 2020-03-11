@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 15:25:10 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/11 16:38:57 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/03/11 19:31:40 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,21 @@ int	main(int argc, char **argv)
 	char	*s;
 	unsigned int j;
 
-	j = 5648;
-	//ft_printf("%50.4s.\n", "Bonjour");
-	ft_printf("%d\n", j);
-	printf("%d\n", j);			
-	ft_printf("%-25d\n", j);
-	printf("%-25d\n", j);
-	ft_printf("%04d\n", j);
-	printf("%04d\n", j);
-	ft_printf("%-.*d\n", 5, j);
-	printf("%-.*d\n", 5, j);			
-	ft_printf("%010d\n", j);
-	printf("%010d\n", j);
-	ft_printf("%01d\n", j);
-	printf("%01d\n", j);
-	ft_printf("%54d\n", j);
-	printf("%54d\n\n", j);
-	ft_printf("%10s\n", "hey");
-	printf("%10s", "hey");
+	j = 48;
+	printf("% 45.*");
+	/*ft_printf("%034p\n", &j);
+	printf("%034p\n", &j);			
+	ft_printf("%-25p\n", &j);
+	printf("%-25p\n", &j);
+	ft_printf("%4p\n", &j);
+	printf("%4p\n", &j);
+	ft_printf("%-.*p\n", 5, &j);
+	printf("%-.*p\n", 5, &j);			
+	ft_printf("%10p\n", &j);
+	printf("%10p\n", &j);
+	ft_printf("%1p\n", &j);
+	printf("%1p\n", &j);
+	ft_printf("%54p\n", &j);
+	printf("%54p\n\n", &j);*/
 	return (0);
 }

@@ -6,134 +6,11 @@
 /*   By: opheliebaribaud <marvin@42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 12:03:07 by ophelieba         #+#    #+#             */
-/*   Updated: 2020/03/11 16:46:57 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/03/11 19:32:35 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-int		print_s_justif(char *s, struct flags *flags)
-{
-		if (flags->precision != 0 && flags->precision < ft_strlen(s))
-				ft_putnstr(s, flags->precision);
-		else
-				ft_putstr(s);
-		return (0);
-}
-
-int		print_s(va_list args, struct flags *flags )
-{
-		char *s;
-
-		s = va_arg(args, char *);
-		if (flags->justif == 1)
-				print_s_justif(s, flags);	
-		if (flags->precision != 0 && flags->precision < ft_strlen(s))
-				while (flags->precision++ < flags->taille_champs)
-						ft_putchar(' ');
-		else
-				while (ft_strlen(s) < flags->taille_champs--)
-						ft_putchar(' ');
-		if (flags->justif == 0)
-			print_s_justif(s, flags);	
-		return (0);
-}
-
-int		print_d_justif(int i, struct flags *flags, int len)
-{
-		if (i < 0)
-		{
-				len--;
-				i = i * -1;
-				ft_putchar('-');
-		}
-		if (flags->precision > len)
-				while (flags->precision > len)
-				{
-						len++;
-						ft_putchar('0');
-				}
-		ft_putnbr(i);
-		len++;
-		while (flags->taille_champs > len)
-		{
-				len++;
-				ft_putchar(' ');
-		}
-		return(0);
-}
-
-int		print_d_nonjustif(int i, struct flags *flags, int len)
-{	
-		while (flags->taille_champs > len) //pb ici
-		{
-				flags->taille_champs--;
-				if (flags->zero == 1)
-						ft_putchar('0');
-				else
-						ft_putchar(' ');
-		}
-		if (i < 0)
-		{
-				len--;
-				i = i * -1;
-				ft_putchar('-');
-		}
-		while (len++ < flags->precision)
-				ft_putchar('0');
-		ft_putnbr(i);
-		return (0);
-}
-
-int		print_d(va_list args, struct flags *flags)
-{
-		int	i;
-		int	len;
-
-		i = va_arg(args, int);
-		len = ft_strlen(ft_itoa(i)); //il y a pas un malloc ici ??
-		if (flags->justif == 1) 
-				print_d_justif(i, flags, len);	
-		else
-				print_d_nonjustif(i, flags, len);	
-		return (0);
-}
-
-int	print_x(va_list args, struct flags *flags, int signal)
-{
-		unsigned int x;
-
-		x = (unsigned int)(va_arg(args, int));
-		putnbr_hexa(x, signal);
-		return (0);
-		//reste à gerer les flags
-}
-
-int		print_c(va_list args, struct flags *flags)
-{
-		int c;
-
-		c = va_arg(args, int);
-		if (flags->justif == 1)
-				ft_putchar(c);
-		while (1 < flags->taille_champs)
-		{
-				ft_putchar(' ');
-				flags->taille_champs--;
-		}
-		if (flags->justif == 0)
-				ft_putchar(c);
-		return (0);
-}
-
-int	print_u(va_list args)
-{
-		unsigned int u;
-
-		u = va_arg(args, unsigned int);
-		ft_putnbr(u);
-		return (0);
-}
 
 int	fill_flags_struct(struct flags *flags, char *fmt, va_list args)
 {
@@ -160,21 +37,21 @@ int	fill_flags_struct(struct flags *flags, char *fmt, va_list args)
 int		dispatch(va_list args, char *fmt, struct flags *flags, int i)
 {
 		if (fmt[i] == 'c')
-				print_c(args, flags);
+			print_c(args, flags);
 		if (fmt[i] == 's')
-				print_s(args, flags);
-		//if (fmt[i] == 'p')
-		//	print_p(args);
+			print_s(args, flags);
+		if (fmt[i] == 'p')
+			print_p(args, flags);
 		if (fmt[i] == 'd' || fmt[i] == 'i')
-				print_d(args, flags);
+			print_d(args, flags);
 		if (fmt[i] == 'u')
-				print_u(args);
+			print_u(args, flags);
 		if (fmt[i] == 'x')
-				print_x(args, flags, 0);
+			print_x(args, flags, 0);
 		if (fmt[i] == 'X')
-				print_x(args, flags, 1);
+			print_x(args, flags, 1);
 		if (fmt[i] == '%')
-				ft_putchar('%');
+			ft_putchar('%');
 		return (0);
 }
 

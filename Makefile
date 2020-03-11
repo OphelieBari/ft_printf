@@ -1,8 +1,15 @@
 CFLAGS    = -Wall -Wextra -Werror
 
-SRCS = ./srcs/*.c
+SRCS = srcs/print_d.c \
+			srcs/print_s.c \
+			srcs/print_u.c \
+			srcs/print_x.c \
+			srcs/print_c.c \
+			srcs/print_p.c \
+			ft_printf.c \
+			srcs/ft_printf_utils.c
 
-HEADER = ./ft_printf.h	
+HEADER = ft_printf.h	
 
 OBJS = $(SRCS:.c=.o)
 

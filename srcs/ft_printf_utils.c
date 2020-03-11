@@ -6,11 +6,11 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:45:19 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/10 22:23:26 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/03/11 17:57:36 by obaribau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../ft_printf.h"
 
 void	ft_putchar(char c)
 {
@@ -205,26 +205,21 @@ char	*ft_itoa(int n)
 	return (fill_itoa(n, tab, size));
 }
 
-int	putnbr_hexa(unsigned int x, int signal)
+char	*ft_itoa_u(unsigned int n)
 {
-	int i;
-	unsigned int nbr_final[12];
-       	char *baseX = "0123456789ABCDEF";
-	char *basex = "0123456789abcdef";
-	
-	i = 0;
-	        while (x)
+	int size;
+	unsigned int nbr;
+	char*tab;
+
+	nbr = n;
+	size = 1;
+	while (nbr / 10 != 0)
 	{
-		nbr_final[i] = x % 16;
-		 x = x / 16;
-		i++;
+		nbr = nbr / 10;
+		size++;
 	}
-	while (--i >= 0)
-	{
-		if (signal == 1)
-			ft_putchar(baseX[nbr_final[i]]);
-		else
-			ft_putchar(basex[nbr_final[i]]);
-	}
-	return (0);
+	if (!(tab = malloc(sizeof(char) * (size + 1))))
+		return (0);
+	tab[size--] = 0;
+	return (fill_itoa(n, tab, size));
 }
