@@ -6,18 +6,37 @@
 /*   By: opheliebaribaud <marvin@42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 12:03:07 by ophelieba         #+#    #+#             */
-/*   Updated: 2020/03/09 01:08:18 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/03/10 22:23:04 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		print_s(va_list args)
+int		print_s(va_list args, struct flags *flags )
 {
 	char *s;
 	
 	s = va_arg(args, char *);
-	ft_putstr(s);
+	if (flags->justif == 1)
+	{
+		if (flags->precision != 0 && flags->precision < ft_strlen(s))
+			ft_putnstr(s, flags->precision);
+		else
+			ft_putstr(s);
+	}
+	if (flags->precision != 0 && flags->precision < ft_strlen(s))
+		while (flags->precision++ < flags->taille_champs)
+			ft_putchar(' ');
+	else
+		while (ft_strlen(s) < flags->taille_champs)
+			ft_putchar(' ');
+	if (flags->justif == 0)
+	{
+		if (flags->precision != 0 && flags->precision < ft_strlen(s))
+			ft_putnstr(s, flags->precision);
+		else
+			ft_putstr(s);
+	}
 	return (0);
 }
 
@@ -28,7 +47,8 @@ int		print_d(va_list args, struct flags *flags)
 	
 	i = va_arg(args, int);
 	len = ft_strlen(ft_itoa(i)); //il y a pas un malloc ici ??
-	if (flags->justif == 1) // le 0 n'est pas à gerer quand justifié
+	//faire de ci-dessous une fonction qui servira aussi pour le u !!
+	if (flags->justif == 1) 
 	{
 		if (i < 0)
 		{
@@ -42,7 +62,7 @@ int		print_d(va_list args, struct flags *flags)
 				len++;
 				ft_putchar('0');
 			}
-		ft_putnbr(i); //corriger le putnbr pour int min
+		ft_putnbr(i);
 		len++;
 		while (flags->taille_champs > len)
 		{
@@ -73,12 +93,30 @@ int		print_d(va_list args, struct flags *flags)
 	return (0);
 }
 
-int		print_c(va_list args)
+int	print_x(va_list args, struct flags *flags, int signal)
+{
+	unsigned int x;
+
+	x = (unsigned int)(va_arg(args, int));
+	putnbr_hexa(x, signal);
+	return (0);
+	//reste à gerer les flags
+}
+
+int		print_c(va_list args, struct flags *flags)
 {
 	int c;
 	
 	c = va_arg(args, int);
-	ft_putchar(c);
+	if (flags->justif == 1)
+		ft_putchar(c);
+	while (1 < flags->taille_champs)
+	{
+		ft_putchar(' ');
+		flags->taille_champs--;
+	}
+	if (flags->justif == 0)
+		ft_putchar(c);
 	return (0);
 }
 
@@ -114,7 +152,7 @@ int	fill_flags_struct(struct flags *flags, char *fmt, va_list args)
 	return (0);
 }
 
-int 	check_args_flags(va_list args, char *fmt) //découper fmt
+int 	check_args_flags(va_list args, char *fmt)
 {
 		int i;
 		struct flags	flags;
@@ -130,19 +168,19 @@ int 	check_args_flags(va_list args, char *fmt) //découper fmt
 		if (!fmt[i])
 			return (0);
 		if (fmt[i] == 'c')
-			print_c(args); //il faudra rajouter la structure .*0-
+			print_c(args, &flags);
 		if (fmt[i] == 's')
-			print_s(args);
+			print_s(args, &flags);
 		//if (fmt[i] == 'p')
 		//	print_p(args);
 		if (fmt[i] == 'd' || fmt[i] == 'i')
 			print_d(args, &flags);
 		if (fmt[i] == 'u')
 			print_u(args);
-		//if (fmt[i] == 'x')
-		//	print_x(args);
-		//if (fmt[i] == 'X')
-		//	print_X(args);
+		if (fmt[i] == 'x')
+			print_x(args, &flags, 0);
+		if (fmt[i] == 'X')
+			print_x(args, &flags, 1);
 		if (fmt[i] == '%')
 			ft_putchar('%');
 		return (i + 1);

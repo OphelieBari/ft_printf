@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:45:19 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/08 17:10:25 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/03/10 22:23:26 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ int	ft_putstr(char *str)
 		while (str[i])
 				write(1, &str[i++], 1);
 		return (0);
+}
+
+int	ft_putnstr(char *str, int len)
+{
+	int i;
+
+	i = 0;
+	while (str[i] && i < len)
+		write(1, &str[i++], 1);
+	return (0);
 }
 
 int	ft_putnstr_mod(char *str)
@@ -78,22 +88,12 @@ int	ft_strlen(const char *s)
 
 void	ft_putnbr(int nb)
 {
-		if (nb == -2147483648)
-		{
-				ft_putchar('-');
-				ft_putchar('2');
-				nb = 147483648;
-		}
-		if (nb < 0)
-		{
-				ft_putchar('-');
-				nb = nb * -1;
-		}
-		if (nb >= 10)
-		{
-				ft_putnbr(nb / 10);
-		}
-		ft_putchar((nb % 10) + '0');
+	unsigned int n;
+		
+	n = (unsigned int)nb;
+	if (n >= 10)
+		ft_putnbr(n / 10);
+	ft_putchar((n % 10) + '0');
 }
 
 void	*ft_memset(void *b, int c, size_t len)
@@ -203,4 +203,28 @@ char	*ft_itoa(int n)
 		return (0);
 	tab[size--] = 0;
 	return (fill_itoa(n, tab, size));
+}
+
+int	putnbr_hexa(unsigned int x, int signal)
+{
+	int i;
+	unsigned int nbr_final[12];
+       	char *baseX = "0123456789ABCDEF";
+	char *basex = "0123456789abcdef";
+	
+	i = 0;
+	        while (x)
+	{
+		nbr_final[i] = x % 16;
+		 x = x / 16;
+		i++;
+	}
+	while (--i >= 0)
+	{
+		if (signal == 1)
+			ft_putchar(baseX[nbr_final[i]]);
+		else
+			ft_putchar(basex[nbr_final[i]]);
+	}
+	return (0);
 }
