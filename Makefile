@@ -1,4 +1,4 @@
-CFLAGS    = -Wall -Wextra -Werror
+CFLAGS    = -Wall -Wextra -Werror -g
 
 SRCS = srcs/print_d.c \
 			srcs/print_s.c \
@@ -13,7 +13,7 @@ HEADER = ft_printf.h
 
 OBJS = $(SRCS:.c=.o)
 
-NAME = ft_printf.a
+NAME = libftprintf.a
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:45:19 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/11 17:57:36 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/04/21 18:10:47 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ int	ft_putstr(char *str)
 		int i;
 
 		i = 0;
-		while (str[i])
-				write(1, &str[i++], 1);
+		if (!str)
+			return (0);
+		while (str[i] != '\0')
+		{
+			write(1, &str[i], 1);
+			i++;
+		}
 		return (0);
 }
 
@@ -32,6 +37,8 @@ int	ft_putnstr(char *str, int len)
 	int i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] && i < len)
 		write(1, &str[i++], 1);
 	return (0);
@@ -42,9 +49,11 @@ int	ft_putnstr_mod(char *str)
 		int i;
 
 		i = 0;
+		if (!str)
+			return (0);
 		while (str[i] && str[i] != '%')
 				write(1, &str[i++], 1);
-		return (0);
+		return (i);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -65,6 +74,8 @@ char	*ft_strdup(const char *s1)
 		int		i;
 
 		i = 0;
+		if (!s1)
+			return (0);
 		if (!(tab = malloc(sizeof(char) * (ft_strlen(s1) + 1))))
 				return (0);
 		while (s1[i])
@@ -81,6 +92,8 @@ int	ft_strlen(const char *s)
 		int i;
 
 		i = 0;
+		if (!s)
+			return (0);
 		while (s[i])
 				i++;
 		return (i);

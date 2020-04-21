@@ -6,35 +6,75 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 16:48:11 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/11 17:14:42 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/04/21 18:22:35 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_printf.h"
 
-int		print_s_justif(char *s, struct flags *flags)
+int		print_s_justif(char *s, struct flags *flags, int freed)
 {
-		if (flags->precision != 0 && flags->precision < ft_strlen(s))
+		int ret;
+
+		ret = ft_strlen(s);
+		if (flags->precision != -1 && flags->precision < ret)
+		{
 				ft_putnstr(s, flags->precision);
+				return (flags->precision);
+		}
+		ft_putstr(s);
+		if (freed == 1)
+			free(s);
+		return (ret);
+}
+
+int		print_s_next(int precision, char *s, int champs)
+{
+		int i;
+		int len;
+
+		i = 0;
+		len = ft_strlen(s);
+		if (precision != -1 && precision < len)
+		{
+			while (precision++ < champs)
+			{
+					ft_putchar(' ');
+					i++;
+			}
+		}
 		else
-				ft_putstr(s);
-		return (0);
+		{
+			while (len < champs--)
+			{
+					ft_putchar(' ');
+					i++;
+			}
+		}
+		return (i);
 }
 
 int		print_s(va_list args, struct flags *flags )
 {
 		char *s;
+		int	champs;
+		int	precision;
+		int	ret;
+		int 	i;
+		int freed = 0;
 
-		s = va_arg(args, char *);
+		champs = flags->taille_champs;
+		precision = flags->precision;
+		s = va_arg(args, char*);
+		if (!s)
+		{
+			freed = 1;
+			s = ft_strdup("(null)");
+		}
 		if (flags->justif == 1)
-				print_s_justif(s, flags);
-		if (flags->precision != 0 && flags->precision < ft_strlen(s))
-				while (flags->precision++ < flags->taille_champs)
-						ft_putchar(' ');
-		else
-				while (ft_strlen(s) < flags->taille_champs--)
-						ft_putchar(' ');
+			ret = print_s_justif(s, flags, freed);
+		i = print_s_next(precision, s, champs);
 		if (flags->justif == 0)
-			print_s_justif(s, flags);
-		return (0);
+			return (print_s_justif(s, flags, freed) + i);
+		return (ret + i);
 }
