@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 16:48:11 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/21 18:22:35 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/25 21:41:15 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		print_s_justif(char *s, struct flags *flags, int freed)
 {
 		int ret;
+		(void)freed;
 
 		ret = ft_strlen(s);
 		if (flags->precision != -1 && flags->precision < ret)
@@ -23,8 +24,8 @@ int		print_s_justif(char *s, struct flags *flags, int freed)
 				return (flags->precision);
 		}
 		ft_putstr(s);
-		if (freed == 1)
-			free(s);
+		//if (freed == 1)
+		//	free(s);
 		return (ret);
 }
 

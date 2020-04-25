@@ -6,6 +6,7 @@ SRCS = srcs/print_d.c \
 			srcs/print_x.c \
 			srcs/print_c.c \
 			srcs/print_p.c \
+			srcs/print_pourcent.c \
 			ft_printf.c \
 			srcs/ft_printf_utils.c
 

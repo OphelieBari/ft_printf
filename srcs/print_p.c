@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 19:13:24 by obaribau          #+#    #+#             */
-/*   Updated: 2020/03/11 19:28:45 by obaribau         ###   ########.fr       */
+/*   Updated: 2020/04/25 22:05:06 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,29 @@ int	len_hexa_p(long long x)
 	int i;
 
 	i = 0;
+	if (x == 0)
+		i++;
 	while (x)
 	{
 		x = x / 16;
 		i++;
 	}
-	return(i);
+	return (i);
 }
 
 int	putnbr_hexa_p(long long x)
 {
-	int i;
-	unsigned int nbr_final[12];
-	char *basex = "0123456789abcdef";
+	int		i;
+	long long	nbr_final[12];
+	char		*basex = "0123456789abcdef";
 
 	i = 0;
-	
-	ft_putstr("0x");
+	if (x == 0)
+		ft_putchar('0');
 	while (x)
 	{
 		nbr_final[i] = x % 16;
-		 x = x / 16;
+		x = x / 16;
 		i++;
 	}
 	while (--i >= 0)
@@ -45,62 +47,72 @@ int	putnbr_hexa_p(long long x)
 	return (0);
 }
 
-int		print_p_justif(long long i, struct flags *flags, int len)
+int	print_p_justif(long long i, struct flags *flags, int len)
 {
-		if (i < 0)
+	int ret;
+
+	ret = 0;
+	ft_putstr("0x");
+	if (flags->precision > len)
+	{
+		while (flags->precision > len)
 		{
-				len--;
-				i = i * -1;
-				ft_putchar('-');
+			len++;
+			ft_putchar('0');
+			ret++;
 		}
-		if (flags->precision > len)
-				while (flags->precision > len)
-				{
-						len++;
-						ft_putchar('0');
-				}
-		putnbr_hexa_p(i);
+	}
+	putnbr_hexa_p(i);
+	len++;
+	while (flags->taille_champs >= len)
+	{
 		len++;
-		while (flags->taille_champs - 2 > len)
-		{
-				len++;
-				ft_putchar(' ');
-		}
-		return(0);
+		ft_putchar(' ');
+		ret++;
+	}
+	return (ret);
 }
 
-int		print_p_nonjustif(long long i, struct flags *flags, int len)
+int	print_p_nonjustif(long long i, struct flags *flags, int len)
 {
-		while (flags->taille_champs - 2> len)
-		{
-				flags->taille_champs--;
-				if (flags->zero == 1)
-						ft_putchar('0');
-				else
-						ft_putchar(' ');
-		}
-		if (i < 0)
-		{
-				len--;
-				i = i * -1;
-				ft_putchar('-');
-		}
-		while (len++ < flags->precision)
-				ft_putchar('0');
-		putnbr_hexa_p(i);
-		return (0);
+	int ret;
+
+	ret = 0;
+	while ((flags->precision > len && flags->taille_champs > flags->precision)
+			|| (flags->precision < len && flags->taille_champs > len))
+	{
+		flags->taille_champs--;
+		if (flags->zero == 1 && flags->precision == -1)
+			ft_putchar('0');
+		else
+			ft_putchar(' ');
+		ret++;
+	}
+	ft_putstr("0x");
+	while (len < flags->precision--)
+	{
+		ft_putchar('0');
+		ret++;
+	}
+	putnbr_hexa_p(i);
+	return (ret);
 }
 
 int	print_p(va_list args, struct flags *flags)
 {
-		long long p;
-		int len;
+	long long	x;
+	int		len;
 
-		p = va_arg(args, long long);
-		len = len_hexa_p(p);
-		if (flags->justif == 1)
-				print_p_justif(p, flags, len);
-		else
-				print_p_nonjustif(p, flags, len);
-		return (0);
+	x = (va_arg(args, long long));
+	len = len_hexa_p(x) + 2;
+	flags->precision = flags->precision + 2;
+	if (flags->precision >= 0 && flags->precision < len)
+		flags->precision = 0;
+	if (flags->taille_champs <= len)
+		flags->taille_champs = 0;
+	if (flags->justif == 1)
+		return (print_p_justif(x, flags, len) + len);
+	else
+		return (print_p_nonjustif(x, flags, len) + len);
+	return (0);
 }

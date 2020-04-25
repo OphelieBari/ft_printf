@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 15:25:10 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/21 17:31:15 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/25 21:55:00 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ int	main(int argc, char **argv)
 	//ft_printf("%034s\n", s);
 	//printf("%034s\n", s);	
 	//ft_printf("hNE MvFD%0*uvf%6sJw%-X", 7, -120359681, NULL, 1695073651);
-	printf("hNE MvFD%0*uvf%6sJw%-X", 7, -120359681, NULL, 1695073651);	
-	printf("hey%s\n", 234);	
+	//printf("hNE MvFD%0*uvf%6sJw%-X", 7, -120359681, NULL, 1695073651);	
+	//printf("hey%s\n", 234);	
+	//printf(" 1 lctickcL6%.2s%*cpiCXeWghOq%-.*ia", "coTqfEQk2TkhIC kFn8nOoqswB9XEtxvKO447v3EEQ GynQ6", -9, '\0', -6, 0);
+	//ft_printf(" 2 lctickcL6%.2s%*cpiCXeWghOq%-.*ia", "coTqfEQk2TkhIC kFn8nOoqswB9XEtxvKO447v3EEQ GynQ6", -9, '\0', -6, 0);
 	//ft_printf("hey%s\n", 234);
 	//printf("%X\n", ft_printf("%X\n", 0));
 	//printf("%X\n", printf("%X\n", 0));
@@ -39,5 +41,9 @@ int	main(int argc, char **argv)
 	//printf("%1s\n", s);
 	//ft_printf("%54s\n", s);
 	//printf("%54s\n\n", s);
+	ft_printf("ft : %-5.d\n", 0);
+	printf("pt : %-5.d", 0);
+	ft_printf("ft_printf : %x\n%x\n", -2147483647, 2147483647);
+	printf("ft_printf : %x\n%x\n", -2147483647, 2147483647);
 	return (0);
 }

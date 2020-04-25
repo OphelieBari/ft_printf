@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:45:19 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/21 18:10:47 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/25 19:11:17 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,14 +169,14 @@ int	ft_atoi(const char *str)
 	return (fill_atoi(i, &str[0]) * sign);
 }
 
-char	*fill_itoa(int n, char *tab, int size)
+char	*fill_itoa(long long n, char *tab, int size)
 {
-	unsigned int nbrneg;
+	unsigned long long nbrneg;
 
 	nbrneg = 0;
 	if (n < 0)
 	{
-		nbrneg = (unsigned int)n * -1;
+		nbrneg = (unsigned long long)n * -1;
 		tab[0] = '-';
 		while (size > 0)
 		{
@@ -197,10 +197,10 @@ char	*fill_itoa(int n, char *tab, int size)
 	return (tab);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long long n)
 {
 	int size;
-	int nbr;
+	long long nbr;
 	char*tab;
 
 	nbr = n;

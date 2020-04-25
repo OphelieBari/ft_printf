@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_c.c                                          :+:      :+:    :+:   */
+/*   print_pourcent.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opheliebaribaud <marvin@42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 18:28:57 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/25 17:46:11 by ophelieba        ###   ########.fr       */
+/*   Created: 2020/04/25 18:13:56 by ophelieba         #+#    #+#             */
+/*   Updated: 2020/04/25 18:18:16 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_printf.h"
 
-int	boucle_c(struct flags *flags, int signal)
+int	boucle_pourcent(struct flags *flags, int signal)
 {
 	int ret;
 
@@ -29,29 +29,27 @@ int	boucle_c(struct flags *flags, int signal)
 	return (ret);
 }
 
-int	print_c(va_list args, struct flags *flags)
+int	print_pourcent(struct flags *flags)
 {
-	int c;
 	int ret;
 
 	ret = 0;
-	c = va_arg(args, int);
 	if (flags->justif == 1)
 	{
-		ft_putchar(c);
-		ret = boucle_c(flags, 0) + 1;
+		ft_putchar('%');
+		ret = boucle_pourcent(flags, 0) + 1;
 	}
 	if (flags->justif == 0)
 	{
 		if (flags->zero == 0)
 		{
-			ret = boucle_c(flags, 0) + 1;
-			ft_putchar(c);
+			ret = boucle_pourcent(flags, 0) + 1;
+			ft_putchar('%');
 		}
 		else
 		{
-			ret = boucle_c(flags, 1) + 1;
-			ft_putchar(c);
+			ret = boucle_pourcent(flags, 1) + 1;
+			ft_putchar('%');
 		}
 	}
 	return (ret);
