@@ -6,46 +6,13 @@
 /*   By: opheliebaribaud <marvin@42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 12:03:07 by ophelieba         #+#    #+#             */
-/*   Updated: 2020/04/25 23:08:51 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 15:16:59 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libftprintf.h"
 
-int	fill_flags_struct(struct flags *flags, char *fmt, va_list args)
-{
-	int i;
-
-	i = 0;
-	if ((fmt[i - 1] == '%' || fmt[i - 1] == '-') && fmt[i] >= '0' && fmt[i] <= '9')
-		flags->taille_champs = ft_atoi(&fmt[i]);
-	if (fmt[i] == '*' && (fmt[i - 1] != '.'))
-	{
-		flags->taille_champs = va_arg(args, unsigned int);
-		if (flags->taille_champs < 0)
-		{
-			flags->taille_champs = flags->taille_champs * -1;
-			flags->justif = 1;
-		}
-	}
-	if (fmt[i] == '.')
-	{
-		flags->precision = 0;
-		if (fmt[i + 1] >= '0' && fmt[i + 1] <= '9')
-			flags->precision = ft_atoi(&fmt[i + 1]);
-		if (fmt[i + 1] == '*')
-			flags->precision = va_arg(args, unsigned int);
-		if (flags->precision < 0)
-			flags->precision = -1;
-	}
-	if (fmt[i] == '0' && (fmt[i - 1] < '0' || fmt[i - 1] > '9'))
-		flags->zero = 1;
-	if (fmt[i] == '-')
-		flags->justif = 1;
-	return (0);
-}
-
-int	dispatch(va_list args, char *fmt, struct flags *flags, int i)
+int	dispatch(va_list args, char *fmt, t_flags *flags, int i)
 {
 	if (fmt[i] == 'c')
 		return (print_c(args, flags));
@@ -66,12 +33,12 @@ int	dispatch(va_list args, char *fmt, struct flags *flags, int i)
 	return (0);
 }
 
-int	check_args_flags(va_list args, char *fmt, struct flags *flags)
+int	check_args_flags(va_list args, char *fmt, t_flags *flags)
 {
 	int i;
 
 	i = 1;
-	ft_memset(flags, 0, sizeof(struct flags));
+	ft_memset(flags, 0, sizeof(t_flags));
 	flags->precision = -1;
 	while (fmt[i] != '\0' && (ft_strchr("cspdiuxX%", fmt[i]) == 0))
 	{
@@ -85,21 +52,19 @@ int	check_args_flags(va_list args, char *fmt, struct flags *flags)
 
 int	check_for_param(va_list args, char *fmt)
 {
-	int		ret;
-	char		*ptr;
-	int		ret2;
-	int		ret3;
-	struct	flags	flags;
-	char		*ptr2;
+	int				ret;
+	char			*ptr;
+	int				ret2;
+	t_flags			flags;
+	char			*ptr2;
 
 	ret = 1;
 	ret2 = 0;
-	ret3 = 0;
 	ptr = 0;
 	while (ft_strchr(fmt, '%') && ret != 0)
 	{
 		ptr = ft_strdup(ft_strchr(fmt, '%'));
-		ret3 = ret3 + ft_putnstr_mod(fmt);
+		ret2 = ret2 + ft_putnstr_mod(fmt);
 		ret = check_args_flags(args, ptr, &flags);
 		ret2 = ret2 + dispatch(args, ptr, &flags, ret - 1);
 		free(fmt);
@@ -108,20 +73,17 @@ int	check_for_param(va_list args, char *fmt)
 		free(ptr2);
 		free(ptr);
 	}
+	ret2 = ret2 + ft_putnstr_mod(fmt);
 	if (fmt)
-	{
-		ret2 = ret2 + ft_strlen(fmt);
-		ft_putstr(fmt);
 		free(fmt);
-	}
-	return (ret2 + ret3);
+	return (ret2);
 }
 
 int	ft_printf(const char *fmt, ...)
 {
-	va_list		args;
+	va_list	args;
 	int		ret;
-	char		*new_fmt;
+	char	*new_fmt;
 
 	ret = 0;
 	if (!fmt)

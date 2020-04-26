@@ -6,13 +6,13 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 19:13:24 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/25 22:05:06 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 16:04:42 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf.h"
+#include "../libftprintf.h"
 
-int	len_hexa_p(long long x)
+int		len_hexa_p(unsigned long x)
 {
 	int i;
 
@@ -27,27 +27,21 @@ int	len_hexa_p(long long x)
 	return (i);
 }
 
-int	putnbr_hexa_p(long long x)
+void	putnbr_hexa_p(unsigned long nb)
 {
-	int		i;
-	long long	nbr_final[12];
-	char		*basex = "0123456789abcdef";
+	char	*base;
 
-	i = 0;
-	if (x == 0)
-		ft_putchar('0');
-	while (x)
+	base = "0123456789abcdef";
+	if (nb > 15)
 	{
-		nbr_final[i] = x % 16;
-		x = x / 16;
-		i++;
+		putnbr_hexa_p(nb / 16);
+		putnbr_hexa_p(nb % 16);
 	}
-	while (--i >= 0)
-		ft_putchar(basex[nbr_final[i]]);
-	return (0);
+	if (nb < 16)
+		ft_putchar(base[nb]);
 }
 
-int	print_p_justif(long long i, struct flags *flags, int len)
+int		print_p_justif(long long i, t_flags *flags, int len)
 {
 	int ret;
 
@@ -73,7 +67,7 @@ int	print_p_justif(long long i, struct flags *flags, int len)
 	return (ret);
 }
 
-int	print_p_nonjustif(long long i, struct flags *flags, int len)
+int		print_p_nonjustif(long long i, t_flags *flags, int len)
 {
 	int ret;
 
@@ -98,10 +92,10 @@ int	print_p_nonjustif(long long i, struct flags *flags, int len)
 	return (ret);
 }
 
-int	print_p(va_list args, struct flags *flags)
+int		print_p(va_list args, t_flags *flags)
 {
 	long long	x;
-	int		len;
+	int			len;
 
 	x = (va_arg(args, long long));
 	len = len_hexa_p(x) + 2;

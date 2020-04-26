@@ -6,13 +6,13 @@
 /*   By: opheliebaribaud <marvin@42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 18:13:56 by ophelieba         #+#    #+#             */
-/*   Updated: 2020/04/25 18:18:16 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 15:19:12 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf.h"
+#include "../libftprintf.h"
 
-int	boucle_pourcent(struct flags *flags, int signal)
+int	boucle_pourcent(t_flags *flags, int signal)
 {
 	int ret;
 
@@ -29,7 +29,7 @@ int	boucle_pourcent(struct flags *flags, int signal)
 	return (ret);
 }
 
-int	print_pourcent(struct flags *flags)
+int	print_pourcent(t_flags *flags)
 {
 	int ret;
 

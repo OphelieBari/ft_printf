@@ -1,4 +1,4 @@
-CFLAGS    = -Wall -Wextra -Werror -g
+FLAGS    = -Wall -Wextra -Werror
 
 SRCS = srcs/print_d.c \
 			srcs/print_s.c \
@@ -8,9 +8,12 @@ SRCS = srcs/print_d.c \
 			srcs/print_p.c \
 			srcs/print_pourcent.c \
 			ft_printf.c \
-			srcs/ft_printf_utils.c
+			srcs/fill_flags_struct.c \
+			srcs/ft_printf_utils.c \
+			srcs/ft_printf_utils_bis.c \
+			srcs/ft_printf_utils_ter.c
 
-HEADER = ft_printf.h	
+HEADER = libftprintf.h
 
 OBJS = $(SRCS:.c=.o)
 

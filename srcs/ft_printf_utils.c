@@ -6,131 +6,24 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:45:19 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/25 19:11:17 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 15:17:32 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf.h"
+#include "../libftprintf.h"
 
-void	ft_putchar(char c)
-{
-		write(1, &c, 1);
-}
-
-int	ft_putstr(char *str)
-{
-		int i;
-
-		i = 0;
-		if (!str)
-			return (0);
-		while (str[i] != '\0')
-		{
-			write(1, &str[i], 1);
-			i++;
-		}
-		return (0);
-}
-
-int	ft_putnstr(char *str, int len)
-{
-	int i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] && i < len)
-		write(1, &str[i++], 1);
-	return (0);
-}
-
-int	ft_putnstr_mod(char *str)
-{
-		int i;
-
-		i = 0;
-		if (!str)
-			return (0);
-		while (str[i] && str[i] != '%')
-				write(1, &str[i++], 1);
-		return (i);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-		char *str;
-
-		str = (char *)s;
-		while (*str != (char)c && *str != '\0')
-				str++;
-		if (*str == (char)c)
-				return (str);
-		return (0);
-}
-
-char	*ft_strdup(const char *s1)
-{
-		char	*tab;
-		int		i;
-
-		i = 0;
-		if (!s1)
-			return (0);
-		if (!(tab = malloc(sizeof(char) * (ft_strlen(s1) + 1))))
-				return (0);
-		while (s1[i])
-		{
-				tab[i] = s1[i];
-				i++;
-		}
-		tab[i] = '\0';
-		return (tab);
-}
-
-int	ft_strlen(const char *s)
-{
-		int i;
-
-		i = 0;
-		if (!s)
-			return (0);
-		while (s[i])
-				i++;
-		return (i);
-}
-
-void	ft_putnbr(int nb)
-{
-	unsigned int n;
-		
-	n = (unsigned int)nb;
-	if (n >= 10)
-		ft_putnbr(n / 10);
-	ft_putchar((n % 10) + '0');
-}
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	unsigned char *str;
-
-	str = (unsigned char *)b;
-	while (len--)
-		*str++ = (unsigned char)c;
-	return (b);
-}
-
-int	tests_atoi(int count, int i, const char *str)
+int		tests_atoi(int count, int i, const char *str)
 {
 	if (count > 1)
 		return (0);
 	if (count > 0 && i > 0 && ((str[i - 1] >= 9 && str[i - 1] <= 13) ||
-		str[i - 1] == 32))
+				str[i - 1] == 32))
 		return (0);
 	else
 		return (1);
 }
 
-int	fill_atoi(int i, const char *str)
+int		fill_atoi(int i, const char *str)
 {
 	int nb;
 
@@ -144,7 +37,7 @@ int	fill_atoi(int i, const char *str)
 	return (nb);
 }
 
-int	ft_atoi(const char *str)
+int		ft_atoi(const char *str)
 {
 	int i;
 	int sign;
@@ -156,7 +49,7 @@ int	ft_atoi(const char *str)
 	while (str[i] == '0')
 		i++;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32 ||
-		str[i] == '-' || str[i] == '+')
+			str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '+' || str[i] == '-')
 			count++;
@@ -199,9 +92,9 @@ char	*fill_itoa(long long n, char *tab, int size)
 
 char	*ft_itoa(long long n)
 {
-	int size;
-	long long nbr;
-	char*tab;
+	int			size;
+	long long	nbr;
+	char		*tab;
 
 	nbr = n;
 	size = 1;
@@ -212,25 +105,6 @@ char	*ft_itoa(long long n)
 	}
 	if (n < 0)
 		size++;
-	if (!(tab = malloc(sizeof(char) * (size + 1))))
-		return (0);
-	tab[size--] = 0;
-	return (fill_itoa(n, tab, size));
-}
-
-char	*ft_itoa_u(unsigned int n)
-{
-	int size;
-	unsigned int nbr;
-	char*tab;
-
-	nbr = n;
-	size = 1;
-	while (nbr / 10 != 0)
-	{
-		nbr = nbr / 10;
-		size++;
-	}
 	if (!(tab = malloc(sizeof(char) * (size + 1))))
 		return (0);
 	tab[size--] = 0;

@@ -6,76 +6,69 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 16:48:11 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/25 21:41:15 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 15:19:31 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf.h"
+#include "../libftprintf.h"
 
-int		print_s_justif(char *s, struct flags *flags, int freed)
+int		print_s_justif(char *s, t_flags *flags)
 {
-		int ret;
-		(void)freed;
+	int ret;
 
-		ret = ft_strlen(s);
-		if (flags->precision != -1 && flags->precision < ret)
-		{
-				ft_putnstr(s, flags->precision);
-				return (flags->precision);
-		}
-		ft_putstr(s);
-		//if (freed == 1)
-		//	free(s);
-		return (ret);
+	ret = ft_strlen(s);
+	if (flags->precision != -1 && flags->precision < ret)
+	{
+		ft_putnstr(s, flags->precision);
+		return (flags->precision);
+	}
+	ft_putstr(s);
+	return (ret);
 }
 
 int		print_s_next(int precision, char *s, int champs)
 {
-		int i;
-		int len;
+	int i;
+	int len;
 
-		i = 0;
-		len = ft_strlen(s);
-		if (precision != -1 && precision < len)
+	i = 0;
+	len = ft_strlen(s);
+	if (precision != -1 && precision < len)
+	{
+		while (precision++ < champs)
 		{
-			while (precision++ < champs)
-			{
-					ft_putchar(' ');
-					i++;
-			}
+			ft_putchar(' ');
+			i++;
 		}
-		else
+	}
+	else
+	{
+		while (len < champs--)
 		{
-			while (len < champs--)
-			{
-					ft_putchar(' ');
-					i++;
-			}
+			ft_putchar(' ');
+			i++;
 		}
-		return (i);
+	}
+	return (i);
 }
 
-int		print_s(va_list args, struct flags *flags )
+int		print_s(va_list args, t_flags *flags)
 {
-		char *s;
-		int	champs;
-		int	precision;
-		int	ret;
-		int 	i;
-		int freed = 0;
+	char*s;
+	int	champs;
+	int	precision;
+	int	ret;
+	int	i;
 
-		champs = flags->taille_champs;
-		precision = flags->precision;
-		s = va_arg(args, char*);
-		if (!s)
-		{
-			freed = 1;
-			s = ft_strdup("(null)");
-		}
-		if (flags->justif == 1)
-			ret = print_s_justif(s, flags, freed);
-		i = print_s_next(precision, s, champs);
-		if (flags->justif == 0)
-			return (print_s_justif(s, flags, freed) + i);
-		return (ret + i);
+	champs = flags->taille_champs;
+	precision = flags->precision;
+	s = va_arg(args, char*);
+	if (!s)
+		s = "(null)";
+	if (flags->justif == 1)
+		ret = print_s_justif(s, flags);
+	i = print_s_next(precision, s, champs);
+	if (flags->justif == 0)
+		return (print_s_justif(s, flags) + i);
+	return (ret + i);
 }

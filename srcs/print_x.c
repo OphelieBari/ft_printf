@@ -6,11 +6,11 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 17:55:47 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/25 23:01:40 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 15:20:05 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf.h"
+#include "../libftprintf.h"
 
 int	len_hexa(unsigned int x)
 {
@@ -29,12 +29,14 @@ int	len_hexa(unsigned int x)
 
 int	putnbr_hexa(unsigned int x, int signal)
 {
-	int		i;
+	int				i;
 	unsigned int	nbr_final[12];
-	char		*baseX = "0123456789ABCDEF";
-	char		*basex = "0123456789abcdef";
+	char			*basex_maj;
+	char			*basex;
 
 	i = 0;
+	basex = "0123456789abcdef";
+	basex_maj = "0123456789ABCDEF";
 	if (x == 0)
 		ft_putchar('0');
 	while (x)
@@ -46,14 +48,14 @@ int	putnbr_hexa(unsigned int x, int signal)
 	while (--i >= 0)
 	{
 		if (signal == 1)
-			ft_putchar(baseX[nbr_final[i]]);
+			ft_putchar(basex_maj[nbr_final[i]]);
 		else
 			ft_putchar(basex[nbr_final[i]]);
 	}
 	return (0);
 }
 
-int	print_x_justif(unsigned int i, struct flags *flags, int len, int signal, int dont)
+int	print_x_just(unsigned int i, t_flags *flags, int len, int signal)
 {
 	int ret;
 
@@ -67,7 +69,7 @@ int	print_x_justif(unsigned int i, struct flags *flags, int len, int signal, int
 			ret++;
 		}
 	}
-	if (!dont)
+	if (signal != 3)
 		putnbr_hexa(i, signal);
 	len++;
 	while (flags->taille_champs >= len)
@@ -79,13 +81,15 @@ int	print_x_justif(unsigned int i, struct flags *flags, int len, int signal, int
 	return (ret);
 }
 
-int	print_x_nonjustif(int i, struct flags *flags, int len, int signal, int dont)
+int	print_x_nonjustif(int i, t_flags *flags, int len, int signal)
 {
 	int ret;
 
 	ret = 0;
-	while ((flags->precision > len && flags->taille_champs > flags->precision && !dont)
-			|| (flags->precision <= len && flags->taille_champs > len && !dont) || (dont && flags->taille_champs > 0))
+	while ((flags->precision > len && flags->taille_champs > flags->precision
+			&& signal != 3) || (flags->precision <= len
+			&& flags->taille_champs > len && signal != 3)
+			|| (signal == 3 && flags->taille_champs > 0))
 	{
 		flags->taille_champs--;
 		if (flags->zero == 1 && flags->precision == -1)
@@ -99,28 +103,26 @@ int	print_x_nonjustif(int i, struct flags *flags, int len, int signal, int dont)
 		ft_putchar('0');
 		ret++;
 	}
-	if (!dont)
+	if (signal != 3)
 		putnbr_hexa(i, signal);
 	return (ret);
 }
 
-int	print_x(va_list args, struct flags *flags, int signal)
+int	print_x(va_list args, t_flags *flags, int signal)
 {
 	unsigned int	x;
-	int		len;
-	int 	dont;
+	int				len;
 
-	dont = 0;
 	x = (va_arg(args, unsigned int));
 	len = len_hexa(x);
 	if (flags->precision == 0 && x == 0)
 	{
-		dont = 1;
+		signal = 3;
 		len--;
 	}
 	if (flags->justif == 1)
-		return (print_x_justif(x, flags, len, signal, dont) + len);
+		return (print_x_just(x, flags, len, signal) + len);
 	else
-		return (print_x_nonjustif(x, flags, len, signal, dont) + len);
+		return (print_x_nonjustif(x, flags, len, signal) + len);
 	return (0);
 }

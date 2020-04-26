@@ -6,13 +6,13 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 18:28:57 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/25 17:46:11 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 15:18:25 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf.h"
+#include "../libftprintf.h"
 
-int	boucle_c(struct flags *flags, int signal)
+int	boucle_c(t_flags *flags, int signal)
 {
 	int ret;
 
@@ -29,7 +29,7 @@ int	boucle_c(struct flags *flags, int signal)
 	return (ret);
 }
 
-int	print_c(va_list args, struct flags *flags)
+int	print_c(va_list args, t_flags *flags)
 {
 	int c;
 	int ret;
