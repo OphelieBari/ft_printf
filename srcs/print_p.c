@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 19:13:24 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/26 16:04:42 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 20:47:35 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	putnbr_hexa_p(unsigned long nb)
 		ft_putchar(base[nb]);
 }
 
-int		print_p_justif(long long i, t_flags *flags, int len)
+int		print_p_justif(long long i, t_flags *flags, int len, int dont)
 {
 	int ret;
 
@@ -56,7 +56,8 @@ int		print_p_justif(long long i, t_flags *flags, int len)
 			ret++;
 		}
 	}
-	putnbr_hexa_p(i);
+	if (!dont)
+		putnbr_hexa_p(i);
 	len++;
 	while (flags->taille_champs >= len)
 	{
@@ -67,13 +68,13 @@ int		print_p_justif(long long i, t_flags *flags, int len)
 	return (ret);
 }
 
-int		print_p_nonjustif(long long i, t_flags *flags, int len)
+int		print_p_nonjustif(long long i, t_flags *flags, int len, int dont)
 {
 	int ret;
 
 	ret = 0;
 	while ((flags->precision > len && flags->taille_champs > flags->precision)
-			|| (flags->precision < len && flags->taille_champs > len))
+			|| (flags->precision <= len && flags->taille_champs > len))
 	{
 		flags->taille_champs--;
 		if (flags->zero == 1 && flags->precision == -1)
@@ -88,7 +89,8 @@ int		print_p_nonjustif(long long i, t_flags *flags, int len)
 		ft_putchar('0');
 		ret++;
 	}
-	putnbr_hexa_p(i);
+	if (!dont)
+		putnbr_hexa_p(i);
 	return (ret);
 }
 
@@ -96,17 +98,21 @@ int		print_p(va_list args, t_flags *flags)
 {
 	long long	x;
 	int			len;
+	int			dont;
 
+	dont = 0;
 	x = (va_arg(args, long long));
-	len = len_hexa_p(x) + 2;
+	if (flags->precision == 0 && x == 0)
+		dont = 1;
+	len = len_hexa_p(x) + 2 - dont;
 	flags->precision = flags->precision + 2;
 	if (flags->precision >= 0 && flags->precision < len)
 		flags->precision = 0;
 	if (flags->taille_champs <= len)
 		flags->taille_champs = 0;
 	if (flags->justif == 1)
-		return (print_p_justif(x, flags, len) + len);
+		return (print_p_justif(x, flags, len, dont) + len);
 	else
-		return (print_p_nonjustif(x, flags, len) + len);
+		return (print_p_nonjustif(x, flags, len, dont) + len);
 	return (0);
 }
