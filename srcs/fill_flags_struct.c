@@ -6,7 +6,7 @@
 /*   By: opheliebaribaud <marvin@42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 13:07:53 by ophelieba         #+#    #+#             */
-/*   Updated: 2020/04/26 15:17:15 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 23:36:25 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	fill_flags_struct_next(t_flags *flags, char *fmt, va_list args, int i)
 		if (flags->precision < 0)
 			flags->precision = -1;
 	}
-	if (fmt[i] == '0' && (fmt[i - 1] < '0' || fmt[i - 1] > '9'))
+	if (fmt[i] == '0' && (fmt[i - 1] == '%' || fmt[i - 1] == '-'))
 		flags->zero = 1;
 	if (fmt[i] == '-')
 		flags->justif = 1;

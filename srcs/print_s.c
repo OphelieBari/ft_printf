@@ -6,7 +6,7 @@
 /*   By: obaribau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 16:48:11 by obaribau          #+#    #+#             */
-/*   Updated: 2020/04/26 15:19:31 by ophelieba        ###   ########.fr       */
+/*   Updated: 2020/04/26 23:40:30 by ophelieba        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		print_s_justif(char *s, t_flags *flags)
 	return (ret);
 }
 
-int		print_s_next(int precision, char *s, int champs)
+int		print_s_next(t_flags *flags, int precision, char *s, int champs)
 {
 	int i;
 	int len;
@@ -35,19 +35,21 @@ int		print_s_next(int precision, char *s, int champs)
 	len = ft_strlen(s);
 	if (precision != -1 && precision < len)
 	{
-		while (precision++ < champs)
-		{
+		while ((flags->zero == 0 || (flags->zero == 1 && flags->justif == 1))
+				&& precision++ < champs && ++i)
 			ft_putchar(' ');
-			i++;
-		}
+		while (flags->zero == 1 && precision++ < champs
+				&& ++i && flags->justif == 0)
+			ft_putchar('0');
 	}
 	else
 	{
-		while (len < champs--)
-		{
+		while ((flags->zero == 0 || (flags->zero == 1
+				&& flags->justif == 1)) && len < champs-- && ++i)
 			ft_putchar(' ');
-			i++;
-		}
+		while (flags->zero == 1 && len < champs--
+				&& ++i && flags->justif == 0)
+			ft_putchar('0');
 	}
 	return (i);
 }
@@ -67,7 +69,7 @@ int		print_s(va_list args, t_flags *flags)
 		s = "(null)";
 	if (flags->justif == 1)
 		ret = print_s_justif(s, flags);
-	i = print_s_next(precision, s, champs);
+	i = print_s_next(flags, precision, s, champs);
 	if (flags->justif == 0)
 		return (print_s_justif(s, flags) + i);
 	return (ret + i);
